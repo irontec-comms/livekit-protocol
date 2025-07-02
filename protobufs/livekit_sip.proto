@@ -73,6 +73,8 @@ service SIP {
 
   rpc CreateSIPParticipant(CreateSIPParticipantRequest) returns (SIPParticipantInfo);
   rpc TransferSIPParticipant(TransferSIPParticipantRequest) returns (google.protobuf.Empty);
+  rpc HoldSIPParticipant(HoldSIPParticipantRequest) returns (google.protobuf.Empty);
+  rpc UnholdSIPParticipant(UnholdSIPParticipantRequest) returns (google.protobuf.Empty);
 }
 
 enum SIPStatusCode {
@@ -693,6 +695,16 @@ message TransferSIPParticipantRequest {
   google.protobuf.Duration ringing_timeout = 6;
 }
 
+message HoldSIPParticipantRequest {
+  string participant_identity = 1;
+  string room_name = 2;
+}
+
+message UnholdSIPParticipantRequest {
+  string participant_identity = 1;
+  string room_name = 2;
+}
+
 message SIPCallInfo {
   string call_id = 1;
   string trunk_id = 2;
@@ -735,6 +747,16 @@ message SIPTransferInfo {
   // NEXT ID: 7
 }
 
+message SIPHoldInfo {
+  string hold_id = 1;
+  string call_id = 2;
+  SIPHoldStatus hold_status = 3;
+  string error = 4;
+  SIPStatus hold_status_code = 5;
+
+  // NEXT ID: 6
+}
+
 message SIPUri {
   string user = 1;
   string host = 2;
@@ -755,6 +777,13 @@ enum SIPTransferStatus {
   STS_TRANSFER_ONGOING = 0;
   STS_TRANSFER_FAILED = 1;
   STS_TRANSFER_SUCCESSFUL = 2;
+}
+
+enum SIPHoldStatus {
+  SHS_HOLD_ONGOING = 0;
+  SHS_HOLD_FAILED = 1;
+  SHS_HOLD_SUCCESSFUL = 2;
+  SHS_UNHOLD_SUCCESSFUL = 3;
 }
 
 enum SIPFeature {
