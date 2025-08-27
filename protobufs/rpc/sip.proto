@@ -37,6 +37,24 @@ service SIPInternal {
       }
     };
   };
+  rpc HoldSIPParticipant(InternalHoldSIPParticipantRequest) returns (google.protobuf.Empty) {
+    option (psrpc.options) = {
+      topics: true
+      topic_params: {
+        names: ["sip_call_id"]
+        typed: false
+      }
+    };
+  };
+  rpc UnholdSIPParticipant(InternalUnholdSIPParticipantRequest) returns (google.protobuf.Empty) {
+    option (psrpc.options) = {
+      topics: true
+      topic_params: {
+        names: ["sip_call_id"]
+        typed: false
+      }
+    };
+  };
 }
 
 message InternalCreateSIPParticipantRequest {
@@ -126,5 +144,13 @@ message InternalTransferSIPParticipantRequest {
 
   // Max time for the transfer destination to answer the call.
   google.protobuf.Duration ringing_timeout = 5;
+}
+
+message InternalHoldSIPParticipantRequest {
+  string sip_call_id = 1;
+}
+
+message InternalUnholdSIPParticipantRequest {
+  string sip_call_id = 1;
 }
 
